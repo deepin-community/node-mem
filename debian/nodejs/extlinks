@@ -1,0 +1,5 @@
+mimic-fn
+serialize-javascript	test
+tape		test
+@types/node
+@types/tape

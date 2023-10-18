@@ -1,0 +1,8 @@
+rm -rf dist
+tsc
+if grep require dist/index.js; then
+	echo "Build result is not ES"
+	exit 1
+fi
+mjs2cjs -o dist/_index.cjs dist/index.js
+cp debian/index.cjs dist/

@@ -1,0 +1,135 @@
+Description: <short summary of the patch>
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-05-06
+
+--- a/index.ts
++++ b/index.ts
+@@ -105,6 +105,7 @@
+ 	}: Options<FunctionToMemoize, CacheKeyType> = {},
+ ): FunctionToMemoize {
+ 	if (typeof maxAge === 'number') {
++// @ts-ignore
+ 		mapAgeCleaner(cache as unknown as Map<CacheKeyType, ReturnType<FunctionToMemoize>>);
+ 	}
+ 
+--- a/map-age-cleaner/source/index.ts
++++ b/map-age-cleaner/source/index.ts
+@@ -31,6 +31,7 @@
+ 
+ function mapAgeCleaner<K = any, V = Entry>(map: Map<K, V>, property = 'maxAge') {
+ 	let processingKey: K | undefined;
++// @ts-ignore
+ 	let processingTimer: NodeJS.Timer | undefined;
+ 	let processingDeferred: DeferredPromise<void> | undefined;
+ 
+@@ -41,6 +42,7 @@
+ 		}
+ 
+ 		const setupTimer = async (item: [K, V]) => {
++// @ts-ignore
+ 			processingDeferred = pDefer() as DeferredPromise;
+ 
+ 			const delay = (item[1] as any)[property] - Date.now();
+@@ -56,6 +58,7 @@
+ 			// Keep track of the current processed key
+ 			processingKey = item[0];
+ 
++// @ts-ignore
+ 			processingTimer = setTimeout(() => {
+ 				// Remove the item when the timeout fires
+ 				map.delete(item[0]);
+@@ -89,6 +92,7 @@
+ 		processingKey = undefined;
+ 
+ 		if (processingTimer !== undefined) {
++// @ts-ignore
+ 			clearTimeout(processingTimer);
+ 
+ 			processingTimer = undefined;
+--- a/map-age-cleaner/source/test.ts
++++ b/map-age-cleaner/source/test.ts
+@@ -1,15 +1,8 @@
+ /* tslint:disable:await-promise */
+-import test from 'ava';
++import test from 'tape';
+ import delay from 'delay';
+-import mapAgeCleaner = require('.');
+-
+-interface Context {
+-	map: Map<string, {maxAge: number; data: any}>;
+-}
+-
+-test.beforeEach(t => {
+-	t.context.map = new Map();
+-});
++// @ts-ignore
++import mapAgeCleaner = require('map-age-cleaner');
+ 
+ test('auto removal on initial Map', async t => {
+ 	const map = new Map([
+@@ -29,7 +22,7 @@
+ });
+ 
+ test('auto removal', async t => {
+-	const {map} = t.context as Context;
++	const map = new Map();
+ 	mapAgeCleaner(map);
+ 	map.set('unicorn', {maxAge: Date.now() + 1000, data: '🦄'});
+ 
+@@ -71,7 +64,7 @@
+ });
+ 
+ test('order on reset', async t => {
+-	const {map} = t.context as Context;
++	const map = new Map();
+ 	mapAgeCleaner(map);
+ 
+ 	map.set('unicorn', {maxAge: Date.now() + 1000, data: '🦄'});
+@@ -108,7 +101,7 @@
+ });
+ 
+ test('reset currently processed item', async t => {
+-	const {map} = t.context as Context;
++	const map = new Map();
+ 	mapAgeCleaner(map);
+ 
+ 	map.set('unicorn', {maxAge: Date.now() + 1000, data: '🦄'});
+@@ -124,7 +117,7 @@
+ });
+ 
+ test('reset currently processed item and process next', async t => {
+-	const {map} = t.context as Context;
++	const map = new Map();
+ 	mapAgeCleaner(map);
+ 
+ 	map.set('unicorn', {maxAge: Date.now() + 1000, data: '🦄'});
+--- a/map-age-cleaner/tsconfig.json
++++ b/map-age-cleaner/tsconfig.json
+@@ -18,6 +18,7 @@
+ 		"noUnusedParameters": true,
+ 		"noFallthroughCasesInSwitch": true,
+ 		"noEmitOnError": true,
++		"esModuleInterop": true,
+ 		"forceConsistentCasingInFileNames": true
+ 	},
+ 	"exclude": [
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -2,9 +2,16 @@
+ 	"extends": "@sindresorhus/tsconfig",
+ 	"compilerOptions": {
+ 		"outDir": "dist",
++		"esModuleInterop": true,
+ 		"experimentalDecorators": true
+ 	},
+ 	"files": [
+ 		"index.ts"
++	],
++	"exclude": [
++		"debian",
++		"map-age-cleaner",
++		"node_modules",
++		"p-defer"
+ 	]
+ }

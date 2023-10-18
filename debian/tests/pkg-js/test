@@ -1,0 +1,5 @@
+if [ ! -e node_modules/mem ]; then
+	pkgjs-ln mem
+fi
+tsc -p debian/tsconfig-test.json
+tape test.js

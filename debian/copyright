@@ -1,14 +1,28 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: mem
 Upstream-Contact: https://github.com/sindresorhus/mem/issues
 Source: https://github.com/sindresorhus/mem#readme
+ https://github.com/SamVerschueren/map-age-cleaner/tags
+ https://github.com/sindresorhus/p-defer/tags
 
 Files: *
-Copyright: 2016 Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+Copyright: Sindre Sorhus <sindresorhus@gmail.com>
+License: Expat
+
+Files: map-age-cleaner/*
+Copyright: Sam Verschueren <sam.verschueren@gmail.com>
 License: Expat
 
 Files: debian/*
 Copyright: 2016 Pirate Praveen <praveen@debian.org>
+License: Expat
+
+Files: debian/build_modules/*
+Copyright: Sindre Sorhus <sindresorhus@gmail.com>
+License: Expat
+
+Files: debian/build_modules/@types/*
+Copyright: Microsoft Corporation
 License: Expat
 
 License: Expat
@@ -31,4 +45,3 @@ License: Expat
  ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
-
