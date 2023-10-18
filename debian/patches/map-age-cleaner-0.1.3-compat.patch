@@ -1,0 +1,14 @@
+Description: revert part of 0.2 changes
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-05-06
+
+--- a/map-age-cleaner/source/index.ts
++++ b/map-age-cleaner/source/index.ts
+@@ -132,4 +132,5 @@
+ 	return map;
+ }
+ 
+-export = mapAgeCleaner;
++module.exports = mapAgeCleaner;
++module.exports.default = mapAgeCleaner;

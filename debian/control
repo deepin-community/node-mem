@@ -1,23 +1,31 @@
 Source: node-mem
-Section: web
+Section: javascript
 Priority: optional
 Maintainer: Debian Javascript Maintainers <pkg-javascript-devel@lists.alioth.debian.org>
 Uploaders: Pirate Praveen <praveen@debian.org>
-Build-Depends:
- debhelper (>= 9)
- , dh-buildinfo
- , nodejs
-Standards-Version: 3.9.8
-Homepage: https://github.com/sindresorhus/mem#readme
-Vcs-Git: https://anonscm.debian.org/git/pkg-javascript/node-mem.git
-Vcs-Browser: https://anonscm.debian.org/cgit/pkg-javascript/node-mem.git
+Build-Depends: debhelper-compat (= 13)
+ , dh-sequence-nodejs
+ , node-mimic-fn
+ , node-rollup-plugin-node-resolve
+ , node-typescript
+ , node-tape
+ , node-types-tape
+ , node-serialize-javascript <!nocheck>
+ , rollup
+ , terser
+Standards-Version: 4.6.0
+Vcs-Browser: https://salsa.debian.org/js-team/node-mem
+Vcs-Git: https://salsa.debian.org/js-team/node-mem.git
+Homepage: https://github.com/sindresorhus/mem
+Testsuite: autopkgtest-pkg-nodejs
+Rules-Requires-Root: no
 
 Package: node-mem
 Architecture: all
-Depends:
- ${misc:Depends}
- , nodejs
- , node-mimic-fn (>= 1.0.0)
+Depends: ${misc:Depends}
+ , node-mimic-fn
+Provides: ${nodejs:Provides}
+Breaks: node-os-locale (<< 5.0.0-2~)
 Description: Memoize functions
  An optimization used to speed up consecutive function calls by caching the
  result of calls with identical input.

@@ -1,0 +1,152 @@
+Description: replace ava by tape
+Author: Yadd <yadd@debian.org>
+Forwarded: not-needed
+Last-Update: 2022-02-23
+
+--- a/test.ts
++++ b/test.ts
+@@ -1,7 +1,7 @@
+-import test from 'ava';
++import test from 'tape';
+ import delay from 'delay';
+ import serializeJavascript from 'serialize-javascript';
+-import mem, {memDecorator, memClear} from './index.js';
++import mem, {memDecorator, memClear} from 'mem';
+ 
+ test('memoize', t => {
+ 	let i = 0;
+@@ -48,6 +48,7 @@
+ 	t.is(memoized(() => i++), 6);
+ 	// @ts-expect-error
+ 	t.is(memoized(() => i++), 7);
++	t.end();
+ });
+ 
+ test('cacheKey option', t => {
+@@ -59,6 +60,7 @@
+ 	t.is(memoized('1'), 0);
+ 	t.is(memoized('2'), 1);
+ 	t.is(memoized(2), 1);
++	t.end();
+ });
+ 
+ test('memoize with multiple non-primitive arguments', t => {
+@@ -74,6 +76,7 @@
+ 	t.is(memoized({foo: true}, {bar: false}, {baz: true}), 2);
+ 	// @ts-expect-error
+ 	t.is(memoized({foo: true}, {bar: false}, {baz: true}), 2);
++	t.end();
+ });
+ 
+ test('memoize with regexp arguments', t => {
+@@ -89,6 +92,7 @@
+ 	t.is(memoized(/Elvin Peng/), 2);
+ 	// @ts-expect-error
+ 	t.is(memoized(/Elvin Peng/), 2);
++	t.end();
+ });
+ 
+ test('memoize with Symbol arguments', t => {
+@@ -106,6 +110,7 @@
+ 	t.is(memoized(argument2), 2);
+ 	// @ts-expect-error
+ 	t.is(memoized(argument2), 2);
++	t.end();
+ });
+ 
+ test('maxAge option', async t => {
+@@ -122,6 +127,7 @@
+ 	await delay(200);
+ 	// @ts-expect-error
+ 	t.is(memoized(1), 1);
++	t.end();
+ });
+ 
+ test('maxAge option deletes old items', async t => {
+@@ -151,6 +157,7 @@
+ 	t.is(memoized(1), 1);
+ 	t.is(deleted.length, 1);
+ 	t.is(deleted[0], 1);
++	t.end();
+ });
+ 
+ test('maxAge items are deleted even if function throws', async t => {
+@@ -174,11 +181,13 @@
+ 	// @ts-expect-error
+ 	t.is(memoized(1), 0);
+ 	await delay(200);
++// @ts-ignore
+ 	t.throws(() => {
+ 		// @ts-expect-error
+ 		memoized(1);
+ 	}, {message: 'failure'});
+ 	t.is(cache.size, 0);
++	t.end();
+ });
+ 
+ test('cache option', t => {
+@@ -194,6 +203,7 @@
+ 	t.is(memoized(foo), 0);
+ 	t.is(memoized(bar), 1);
+ 	t.is(memoized(bar), 1);
++	t.end();
+ });
+ 
+ test('promise support', async t => {
+@@ -203,10 +213,12 @@
+ 	t.is(await memoized(), 0);
+ 	// @ts-expect-error
+ 	t.is(await memoized(10), 1);
++	t.end();
+ });
+ 
+ test('preserves the original function name', t => {
+ 	t.is(mem(function foo() {}).name, 'foo'); // eslint-disable-line func-names
++	t.end();
+ });
+ 
+ test('.clear()', t => {
+@@ -218,6 +230,7 @@
+ 	memClear(memoized);
+ 	t.is(memoized(), 1);
+ 	t.is(memoized(), 1);
++	t.end();
+ });
+ 
+ test('prototype support', t => {
+@@ -235,6 +248,7 @@
+ 	t.is(unicorn.foo(), 0);
+ 	t.is(unicorn.foo(), 0);
+ 	t.is(unicorn.foo(), 0);
++	t.end();
+ });
+ 
+ test('.decorator()', t => {
+@@ -260,15 +274,14 @@
+ 
+ 	const beta = new TestClass();
+ 	t.is(beta.counter(), 2, 'The method should not be memoized across instances');
++	t.end();
+ });
+ 
+ test('memClear() throws when called with a plain function', t => {
+ 	t.throws(() => {
+ 		memClear(() => {});
+-	}, {
+-		message: 'Can\'t clear a function that was not memoized!',
+-		instanceOf: TypeError,
+ 	});
++	t.end();
+ });
+ 
+ test('memClear() throws when called on an unclearable cache', t => {
+@@ -279,8 +292,6 @@
+ 
+ 	t.throws(() => {
+ 		memClear(memoized);
+-	}, {
+-		message: 'The cache Map can\'t be cleared!',
+-		instanceOf: TypeError,
+ 	});
++	t.end();
+ });

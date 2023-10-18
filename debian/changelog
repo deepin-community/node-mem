@@ -1,9 +1,55 @@
-node-mem (1.1.0-1.1) unstable; urgency=medium
+node-mem (9.0.2+~cs4.2.0-2) unstable; urgency=medium
 
-  * Non maintainer upload by the Reproducible Builds team.
-  * No source change upload to rebuild on buildd with .buildinfo files.
+  * Team upload
+  * Update build for recent tsc and node
+  * Use mjs2cjs -a
+  * Add patch for map-age-cleaner
 
- -- Holger Levsen <holger@debian.org>  Mon, 28 Dec 2020 00:57:03 +0100
+ -- Yadd <yadd@debian.org>  Fri, 06 May 2022 18:16:38 +0200
+
+node-mem (9.0.2+~cs4.2.0-1) unstable; urgency=medium
+
+  * Team upload
+  * New upstream version 9.0.2+~cs4.2.0
+  * refresh patches
+  * Build bommonjs files using mjs2cjs
+  * Breaks: node-os-locale < 5.0.0-2~
+
+ -- Yadd <yadd@debian.org>  Wed, 23 Feb 2022 15:14:59 +0100
+
+node-mem (8.1.1+~cs3.2.0-1) unstable; urgency=medium
+
+  * Team upload
+
+  [ Debian Janitor ]
+  * Trim trailing whitespace.
+  * Use secure copyright file specification URI.
+  * Bump debhelper from old 9 to 12.
+  * Set debhelper-compat version in Build-Depends.
+  * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
+    Repository-Browse.
+  * Update Vcs-* headers from URL redirect.
+  * Use canonical URL in Vcs-Git.
+  * Remove constraints unnecessary since buster:
+    + node-mem: Drop versioned constraint on node-mimic-fn in Depends.
+
+  [ Yadd ]
+  * Bump debhelper from old 12 to 13.
+  * Declare compliance with policy 4.6.0
+  * Add "Rules-Requires-Root: no"
+  * Change section to javascript
+  * Add debian/gbp.conf
+  * Modernize debian/watch
+    * Fix filenamemangle
+    * Fix GitHub tags regex
+  * Drop nodejs dependency
+  * Use dh-sequence-nodejs auto install
+  * Build with tsc * Update test
+  * Embed map-age-cleaner p-defer
+  * New upstream version 8.1.1+~cs3.2.0
+  * Build map-age-cleaner with tsc
+
+ -- Yadd <yadd@debian.org>  Mon, 13 Dec 2021 15:30:02 +0100
 
 node-mem (1.1.0-1) unstable; urgency=low
 

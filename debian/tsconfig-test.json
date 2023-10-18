@@ -1,0 +1,17 @@
+{
+	"extends": "@sindresorhus/tsconfig",
+	"compilerOptions": {
+		"outDir": "../",
+		"esModuleInterop": true,
+		"experimentalDecorators": true
+	},
+	"files": [
+		"../test.ts"
+	],
+	"exclude": [
+		"debian",
+		"map-age-cleaner",
+		"node_modules",
+		"p-defer"
+	]
+}
